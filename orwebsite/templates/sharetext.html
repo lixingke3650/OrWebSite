@@ -1,0 +1,11 @@
+<h1>Share Text</h1>
+
+</br>
+
+<form enctype="multipart/form-data" action="/sharetext_save/" method="post">
+    {% csrf_token %}
+    <textarea name="sharetextarea" rows="20" cols="30">{{share_text}}</textarea>
+    </br>
+    <input type="submit" value="save"/>
+</form>
+

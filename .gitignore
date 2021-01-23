@@ -1,0 +1,9 @@
+# git ignore
+
+####folder####
+__pycache__
+
+####file####
+*.pyc
+*.log
+*.pid
