@@ -1,0 +1,11 @@
+<h1>RST Edit</h1>
+
+</br>
+
+<form enctype="multipart/form-data" action="/editblog/rstupdate/{{rst_name}}" method="post" filename = {{rst_name}}>
+    {% csrf_token %}
+    <textarea name="rsttextarea" rows="20" cols="30">{{rst_text}}</textarea>
+    </br>
+    <input type="submit" value="save"/>
+</form>
+

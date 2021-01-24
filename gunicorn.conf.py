@@ -1,7 +1,7 @@
-### gunicorn conf for orwebsite
+### gunicorn conf for OrWebSite
 
 ## App path
-chdir = '/home/hanbin/web/orwebsite'
+chdir = '/home/hanbin/web/OrWebSite'
 
 ## Python path
 pythonpath = '/usr/bin/python3'

@@ -1,0 +1,18 @@
+<h1> RST filelist </h1>
+
+<form enctype="multipart/form-data" action="/editblog/rstnew" method="post">
+    {% csrf_token %}
+    <input type="submit" value="New"/>
+</form>
+
+<form enctype="multipart/form-data" action="/editblog/htmlbuild" method="post">
+    {% csrf_token %}
+    <input type="submit" value="Html Rebuild"/>
+</form>
+
+<br/>
+
+{% for value in rstfilenamelist %}
+    <a href="{{value}}"> {{value}} </a>
+    </br>
+{% endfor %}

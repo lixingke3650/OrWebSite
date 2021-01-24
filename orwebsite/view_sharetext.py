@@ -14,7 +14,6 @@ ERR_NO      = 0
 ERR_OTHER   = -1
 
 
-
 def read_sharetext():
     err = ERR_NO
     bufferfile = os.path.join(SHARE_FILE_DIR, SHARE_FILE_NAME)

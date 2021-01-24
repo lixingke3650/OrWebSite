@@ -1,0 +1,14 @@
+<h1>RST New</h1>
+
+</br>
+
+<form enctype="multipart/form-data" action="/editblog/rstnewsave" method="post">
+    {% csrf_token %}
+    <input type="text" name="rst_name" value={{rst_name}}>
+    </br>
+    </br>
+    <textarea name="rsttextarea" rows="20" cols="30">{{rst_text}}</textarea>
+    </br>
+    <input type="submit" value="save"/>
+</form>
+

@@ -18,6 +18,7 @@ from django.urls import path
 
 #ori
 from . import view_hello
+from . import view_editblog
 from . import view_upload
 from . import view_download
 from . import view_index
@@ -29,6 +30,12 @@ urlpatterns = [
     path('', view_index.index),
     path('index', view_index.index),
     path('hello/', view_hello.hello),
+    path('editblog/rstlist/', view_editblog.rstlist),
+    path('editblog/rstnew', view_editblog.rstnew),
+    path('editblog/rstnewsave', view_editblog.rstnewsave),
+    path('editblog/htmlbuild', view_editblog.htmlbuild),
+    path('editblog/rstupdate/<str:rstfilename>', view_editblog.rstupdate),
+    path('editblog/rstlist/<str:rstfilename>', view_editblog.rstedit),
     path('upload/', view_upload.upload),
     path('upload_file/', view_upload.upload_file),
     path('download_list/', view_download.download_list),
