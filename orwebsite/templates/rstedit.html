@@ -4,8 +4,12 @@
 
 <form enctype="multipart/form-data" action="/editblog/rstupdate/{{rst_name}}" method="post" filename = {{rst_name}}>
     {% csrf_token %}
+    <input type="text" name="rst_name" value={{rst_name}}>
+    </br>
+    </br>
     <textarea name="rsttextarea" rows="20" cols="30">{{rst_text}}</textarea>
     </br>
-    <input type="submit" value="save"/>
+    <input type="submit" value="preview" name="slot"/>
+    <input type="submit" value="save" name="slot"/>
 </form>
 

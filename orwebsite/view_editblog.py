@@ -8,6 +8,7 @@ import time
 #extensions
 from django.http import HttpResponse
 from django.shortcuts import render
+from django.shortcuts import redirect
 
 #ori
 from . import orwebsiteconf
@@ -65,22 +66,49 @@ def rstlist(request):
     return render(request, 'blogrstlist.html', context)
 
 def rstupdate(request, rstfilename):
-    try:
-        rstfilefullpath = os.path.join(orwebsiteconf.RST_PATH, rstfilename)
-        rstfilecache = os.path.join(orwebsiteconf.RST_PATH, RSTUPDATE_CACHE)
-        if os.path.exists(rstfilecache) != True:
-            os.makedirs(rstfilecache)
-        currenttime = time.strftime('%Y%m%d%H%M%S',time.localtime(time.time()))
-        rstfilefullpathdst = os.path.join(rstfilecache, rstfilename + '_' + currenttime)
-        shutil.copyfile(rstfilefullpath, rstfilefullpathdst)
+    slot = request.POST.get('slot')
+    rstname = request.POST.get('rst_name')
+    if slot == 'save':
+        try:
+            rstfilefullpath = os.path.join(orwebsiteconf.RST_PATH, rstfilename)
+            rstfilecache = os.path.join(orwebsiteconf.RST_PATH, RSTUPDATE_CACHE)
+            if os.path.exists(rstfilecache) != True:
+                os.makedirs(rstfilecache)
+            currenttime = time.strftime('%Y%m%d%H%M%S',time.localtime(time.time()))
+            rstfilefullpathdst = os.path.join(rstfilecache, rstfilename + '_' + currenttime)
+            shutil.copyfile(rstfilefullpath, rstfilefullpathdst)
 
-        with open(rstfilefullpath, 'w+') as fd:
-            text = request.POST.get('rsttextarea')
-            fd.write(text)
+            if rstname != rstfilename:
+                os.remove(rstfilefullpath)
 
-        return HttpResponse(f"rst file {rstfilename} update successful.")
-    except Exception as e:
-        return HttpResponse(f"rst file {rstfilename} update failed!")
+            rstfilefullpath = os.path.join(orwebsiteconf.RST_PATH, rstname)
+            with open(rstfilefullpath, 'w+') as fd:
+                text = request.POST.get('rsttextarea')
+                fd.write(text)
+
+            return HttpResponse(f"rst file {rstname} update successful.")
+        except Exception as e:
+            return HttpResponse(f"rst file {rstname} update failed!")
+    elif slot == 'preview':
+        try:
+            # clean preview dir
+            cmd = 'cd ' + orwebsiteconf.BLOG_PATH + ' && rm -rf ' + orwebsiteconf.PREVIEW_PATH + '/*'
+            os.system(cmd)
+            # save rst
+            rstfilefullpath = os.path.join(orwebsiteconf.PREVIEW_PATH, rstfilename)
+            if os.path.exists(rstfilefullpath):
+                return HttpResponse(f"file {rstfilename} exists, create failed.")
+            with open(rstfilefullpath, 'w+') as fd:
+                text = request.POST.get('rsttextarea')
+                fd.write(text)
+            # preview
+            cmd = 'cd ' + orwebsiteconf.BLOG_PATH + ' && make preview'
+            os.system(cmd)
+            return redirect(orwebsiteconf.BLOG_URL + "/preview/")
+        except Exception as e:
+            return HttpResponse(f"rst file {rstfilename} preview failed! %s" %e)
+    else:
+        return HttpResponse(f"no action in rstupdate!")
 
 def rstnew(request):
     context = {}
@@ -90,17 +118,40 @@ def rstnew(request):
     return render(request, 'rstnew.html', context)
 
 def rstnewsave(request):
-    try:
-        rstname = request.POST.get('rst_name')
-        rsttext = request.POST.get('rsttextarea')
-        rstfilefullpath = os.path.join(orwebsiteconf.RST_PATH, rstname)
-        if os.path.exists(rstfilefullpath):
-            return HttpResponse(f"file {rstname} exists, create failed.")
-        with open(rstfilefullpath, 'w+') as fd:
-            fd.write(rsttext)
-        return HttpResponse(f"file {rstname} create successful.")
-    except Exception as e:
-        return HttpResponse(f"file {rstname} create failed.")
+    slot = request.POST.get('slot')
+    if slot == 'save':
+        try:
+            rstname = request.POST.get('rst_name')
+            rsttext = request.POST.get('rsttextarea')
+            rstfilefullpath = os.path.join(orwebsiteconf.RST_PATH, rstname)
+            if os.path.exists(rstfilefullpath):
+                return HttpResponse(f"file {rstname} exists, create failed.")
+            with open(rstfilefullpath, 'w+') as fd:
+                fd.write(rsttext)
+            return HttpResponse(f"file {rstname} create successful.")
+        except Exception as e:
+            return HttpResponse(f"file {rstname} create failed.")
+    elif slot == 'preview':
+        try:
+            # clean preview dir
+            cmd = 'cd ' + orwebsiteconf.BLOG_PATH + ' && rm -rf ' + orwebsiteconf.PREVIEW_PATH + '/*'
+            os.system(cmd)
+            # save rst
+            rstname = request.POST.get('rst_name')
+            rsttext = request.POST.get('rsttextarea')
+            rstfilefullpath = os.path.join(orwebsiteconf.PREVIEW_PATH, rstname)
+            if os.path.exists(rstfilefullpath):
+                return HttpResponse(f"file {rstfilename} exists, create failed.")
+            with open(rstfilefullpath, 'w+') as fd:
+                fd.write(rsttext)
+            # preview
+            cmd = 'cd ' + orwebsiteconf.BLOG_PATH + ' && make preview'
+            os.system(cmd)
+            return redirect(orwebsiteconf.BLOG_URL + "/preview/")
+        except Exception as e:
+            return HttpResponse(f"rst file preview failed! %s" %e)
+    else:
+        return HttpResponse(f"no action in rstnewsave!")
 
 def htmlbuild(request):
     cmd = 'cd ' + orwebsiteconf.BLOG_PATH + ' && make html'
