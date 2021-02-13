@@ -94,6 +94,8 @@ def rstupdate(request, rstfilename):
             # clean preview dir
             cmd = 'cd ' + orwebsiteconf.BLOG_PATH + ' && rm -rf ' + orwebsiteconf.PREVIEW_PATH + '/*'
             os.system(cmd)
+            if os.path.exists(orwebsiteconf.PREVIEW_PATH) != True:
+                os.makedirs(orwebsiteconf.PREVIEW_PATH)
             # save rst
             rstfilefullpath = os.path.join(orwebsiteconf.PREVIEW_PATH, rstfilename)
             if os.path.exists(rstfilefullpath):
@@ -136,6 +138,8 @@ def rstnewsave(request):
             # clean preview dir
             cmd = 'cd ' + orwebsiteconf.BLOG_PATH + ' && rm -rf ' + orwebsiteconf.PREVIEW_PATH + '/*'
             os.system(cmd)
+            if os.path.exists(orwebsiteconf.PREVIEW_PATH) != True:
+                os.makedirs(orwebsiteconf.PREVIEW_PATH)
             # save rst
             rstname = request.POST.get('rst_name')
             rsttext = request.POST.get('rsttextarea')
