@@ -7,12 +7,12 @@ chdir = '/home/hanbin/web/OrWebSite'
 pythonpath = '/usr/bin/python3'
 
 ## Server Socket
-bind = '127.0.0.1:5058'
+bind = '127.0.0.1:55181'
 
 backlog = 2048
 
 ## reload app when app update
-reload = True
+reload = False
 
 ## Worker Processes
 workers = 2
@@ -33,9 +33,8 @@ pidfile = chdir + '/gunicorn.pid'
 ## Logging
 accesslog = chdir + '/gunicorn_access.log'
 errorlog = chdir + '/gunicorn_error.log'
-loglevel = 'info'
-logconfig = None
+loglevel = 'debug'
+#logconfig = chdir + '/gunicorn.log'
 
 ## Process Naming
 proc_name = 'orwebsite'
-
