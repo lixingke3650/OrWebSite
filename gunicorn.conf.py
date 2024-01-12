@@ -1,13 +1,16 @@
 ### gunicorn conf for OrWebSite
+import os
+
+TOP_DIR = os.path.abspath(os.path.dirname(__file__))
 
 ## App path
-chdir = '/home/hanbin/web/OrWebSite'
+chdir = TOP_DIR
 
 ## Python path
 pythonpath = '/usr/bin/python3'
 
 ## Server Socket
-bind = '127.0.0.1:55181'
+bind = '192.168.56.101:55181'
 
 backlog = 2048
 
