@@ -10,7 +10,7 @@ chdir = TOP_DIR
 pythonpath = '/usr/bin/python3'
 
 ## Server Socket
-bind = '192.168.56.101:55181'
+bind = '127.0.0.1:5081'
 
 backlog = 2048
 

@@ -2,7 +2,7 @@
 
 <form enctype="multipart/form-data" action="/upload_file/" method="post">
     {% csrf_token %}
-    <input type="file" name="upfile"/>
+    <input type="file" name="upfile" multiple/>
     <br/>
     <br/>
     <input type="submit" value="upload and share"/>
